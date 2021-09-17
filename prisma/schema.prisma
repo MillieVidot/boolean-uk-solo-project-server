@@ -9,78 +9,82 @@ generator client {
 }
 
 model User {
-  id          Int         @id @default(autoincrement())
-  citizenId   String      @unique
-  password    String
-  policies    Policy[]
-  nextOfKins  NextOfKin[]
-  nextOfKinId Int
-  NextOfKin   NextOfKin   @relation(fields: [nextOfKinId], references: [id])
+  id                Int                 @id @default(autoincrement())
+  citizenId         String              @unique
+  password          String
+  policies          Policy[]
+  NextOfKinsOnUsers NextOfKinsOnUsers[]
 }
 
-model Policy {
-  id           Int      @id @default(autoincrement())
-  // policyNumber String @unique   // comes from quoteNumber
-  policyNumber String   @unique
-  quote Quote @relation(fields: [policyNumber], references[quoteNumber])
-  user         User     @relation(fields: [userId], references: [id])
-  userId       Int
-  quote        Quote    @relation(fields: [quoteId], references: [id])
-  quoteId      Int
-  cost         Int
-  startDate    DateTime
-  endDate      DateTime
-}
-
-model Quote {
-  id          Int      @id @default(autoincrement())
-  quoteNumber String   @unique // this needs to be passed to policyNumber!? can we create a combo server side?
-  assets      Asset[]
-  policies    Policy[]
-  cost        Int
-  image       String
-}
-
-model Asset {
-  id         Int      @id @default(autoincrement())
-  name       String   @unique
-  cost       Int
-  image      String
-  categoryId Int
-  category   Category @relation(fields: [categoryId], references: [id])
-  packageId  Int
-  package    Package  @relation(fields: [packageId], references: [id])
-  quoteId    Int
-  quote      Quote    @relation(fields: [quoteId], references: [id])
-}
-
-enum PackageCat {
-  STRUCTURAL
-  MOBILITY
-  VITALS
-  AREA //arm, leg, head, torso
-}
-
-model Package {
-  id         Int        @id @default(autoincrement())
-  name       String     @unique // not needed??
-  cost       Int
-  image      String
-  packageCat PackageCat
-  assets     Asset[]
-}
-
-model Category {
-  id     Int     @id @default(autoincrement())
-  name   String  @unique
-  assets Asset[]
+model NextOfKinsOnUsers {
+  id          Int        @id @default(autoincrement())
+  userId      Int
+  user        User       @relation(fields: [userId], references: [id])
+  NextOfKinId Int
+  nextOfKin   NextOfKin? @relation(fields: [NextOfKinId], references: [id])
 }
 
 model NextOfKin {
-  id        Int    @id @default(autoincrement())
-  firstName String
-  lastName  String
-
-  userId Int
-  user   User @relation(fields: [userId], references: [id])
+  id                Int                 @id @default(autoincrement())
+  firstName         String
+  lastName          String
+  NextOfKinsOnUsers NextOfKinsOnUsers[]
 }
+
+model Policy {
+  id     Int  @id @default(autoincrement())
+  // policyNumber String @unique   // comes from quoteNumber
+  // policyNumber String   @unique
+  // quote        Quote    @relation(fields: [policyNumber], references: [quoteNumber])
+  user   User @relation(fields: [userId], references: [id])
+  userId Int
+  // // quote        Quote    @relation(fields: [quoteId], references: [id])
+  // quoteId      Int
+  // cost         Int
+  // startDate    DateTime
+  // endDate      DateTime
+}
+
+// model Quote {
+//   id          Int     @id @default(autoincrement())
+//   quoteNumber String  @unique // this needs to be passed to policyNumber!? can we create a combo server side?
+//   assets      Asset[]
+//   policy      Policy?
+//   cost        Int
+//   image       String
+// }
+
+// model Asset {
+//   id         Int      @id @default(autoincrement())
+//   name       String   @unique
+//   cost       Int
+//   image      String
+//   categoryId Int
+//   category   Category @relation(fields: [categoryId], references: [id])
+//   packageId  Int
+//   package    Package  @relation(fields: [packageId], references: [id])
+//   quoteId    Int
+//   quote      Quote    @relation(fields: [quoteId], references: [id])
+// }
+
+// enum PackageCat {
+//   STRUCTURAL
+//   MOBILITY
+//   VITALS
+//   AREA //arm, leg, head, torso
+// }
+
+// model Package {
+//   id         Int        @id @default(autoincrement())
+//   name       String     @unique // not needed??
+//   cost       Int
+//   image      String
+//   packageCat PackageCat
+//   assets     Asset[]
+// }
+
+// model Category {
+//   id     Int     @id @default(autoincrement())
+//   name   String  @unique
+//   assets Asset[]
+// }

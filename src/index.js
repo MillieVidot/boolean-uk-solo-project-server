@@ -3,11 +3,11 @@ require("dotenv").config()
 const express = require("express")
 const cors = require("cors")
 const morgan = require("morgan")
+const userRouter = require("./Routes/User/router")
 
 const app = express()
 
 /* SETUP MIDDLEWARE */
-// test here
 
 app.disable("x-powered-by")
 
@@ -18,6 +18,7 @@ app.use(morgan("dev"))
 
 /* SETUP ROUTES */
 
+app.use("/users", userRouter)
 app.get("*", (req, res) => {
   res.json({ ok: true })
 })
