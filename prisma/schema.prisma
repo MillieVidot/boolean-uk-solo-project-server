@@ -9,84 +9,104 @@ generator client {
 }
 
 model User {
-  id                Int                 @id @default(autoincrement())
-  citizenId         String              @unique
-  firstName         String
-  lastName          String
-  password          String
-  policies          Policy[]
-  NextOfKinsOnUsers NextOfKinsOnUsers[]
+  id        Int      @id @default(autoincrement())
+  citizenId String   @unique
+  firstName String
+  lastName  String
+  password  String
+  policies  Policy[]
+  // NextOfKinsOnUsers NextOfKinsOnUsers[]
 }
 
-model NextOfKinsOnUsers {
-  id          Int        @id @default(autoincrement())
-  userId      Int
-  user        User       @relation(fields: [userId], references: [id])
-  NextOfKinId Int
-  nextOfKin   NextOfKin? @relation(fields: [NextOfKinId], references: [id])
-}
+// model NextOfKinsOnUsers {
+//   id          Int        @id @default(autoincrement())
+//   userId      Int
+//   user        User       @relation(fields: [userId], references: [id])
+//   NextOfKinId Int
+//   nextOfKin   NextOfKin? @relation(fields: [NextOfKinId], references: [id])
+// }
 
-model NextOfKin {
-  id                Int                 @id @default(autoincrement())
-  citizenId         String              @unique
-  NextOfKinsOnUsers NextOfKinsOnUsers[]
-}
+// model NextOfKin {
+//   id                Int                 @id @default(autoincrement())
+//   citizenId         String              @unique
+//   NextOfKinsOnUsers NextOfKinsOnUsers[]
+// }
 
 model Policy {
-  id           Int    @id @default(autoincrement())
-  user         User   @relation(fields: [userId], references: [id])
-  userId       Int
-  policyNumber String @unique // comes from quoteNumber
-  quoteNumber  Quote  @relation(name: "name", fields: [policyNumber], references: [quoteNumber])
-
-  quote     Quote    @relation(fields: [quoteId], references: [id])
-  quoteId   Int
-  cost      Int
-  startDate DateTime
-  endDate   DateTime
+  id               Int                @id @default(autoincrement())
+  quoteNumber      String             @unique
+  user             User               @relation(fields: [userId], references: [id])
+  userId           Int
+  cost             Int
+  startDate        DateTime
+  endDate          DateTime
+  status           Status             @relation(fields: [statusId], references: [id])
+  statusId         Int
+  image            String
+  AssetsOnPolicies AssetsOnPolicies[]
 }
 
-model Quote {
-  id          Int      @id @default(autoincrement())
-  quoteNumber String   @unique // this needs to be passed to policyNumber!? can we create a combo server side?
-  // assets      Asset[]
-  policy      Policy?
-  cost        Int
-  // image       String
-  Policy      Policy[] @relation("name")
+enum PolicyStages {
+  QUOTE_EXPIRED
+  POLICY_ACTIVE
+  QUOTE_OFFER
+  POLICY_CANCELLED
+  QUOTE_CANCELLED
 }
 
-// model Asset {
-//   id         Int      @id @default(autoincrement())
-//   name       String   @unique
-//   cost       Int
-//   image      String
-//   categoryId Int
-//   category   Category @relation(fields: [categoryId], references: [id])
-//   packageId  Int
-//   package    Package  @relation(fields: [packageId], references: [id])
-//   quoteId    Int
-//   quote      Quote    @relation(fields: [quoteId], references: [id])
-// }
+model Status {
+  id     Int          @id @default(autoincrement())
+  stage  PolicyStages @default(QUOTE_OFFER)
+  Policy Policy[]
+}
 
-// enum PackageCat {
-//   STRUCTURAL
-//   MOBILITY
-//   VITALS
-//   AREA //arm, leg, head, torso
-// }
+model AssetsOnPolicies {
+  id       Int     @id @default(autoincrement())
+  assetId  Int
+  Asset    Asset   @relation(fields: [assetId], references: [id])
+  policyId Int
+  Policy   Policy? @relation(fields: [policyId], references: [id])
+}
 
-// model Package {
-//   id         Int        @id @default(autoincrement())
-//   name       String     @unique // not needed??
-//   cost       Int
-//   image      String
-//   packageCat PackageCat
-//   assets     Asset[]
-// }
+model Asset {
+  id               Int                @id @default(autoincrement())
+  name             String             @unique
+  cost             Int
+  image            String
+  categoryId       Int
+  category         Category           @relation(fields: [categoryId], references: [id])
+  packageId        Int
+  package          Package            @relation(fields: [packageId], references: [id])
+  AssetsOnPolicies AssetsOnPolicies[]
+}
 
-// model Category {
-//   id     Int     @id @default(autoincrement())
-//   name   String  @unique
-//   assets Asset[]
-// }
+enum PackageCat {
+  STRUCTURAL
+  MOBILITY
+  VITALS
+  AREA //arm, leg, head, torso
+  SENSES
+}
+
+model Package {
+  id         Int        @id @default(autoincrement())
+  name       String     @unique // not needed??
+  cost       Int
+  image      String
+  packageCat PackageCat
+  assets     Asset[]
+}
+
+enum CategoryCat {
+  STRUCTURAL
+  MOBILITY
+  VITALS
+  NONE
+  SENSES
+}
+
+model Category {
+  id     Int         @id @default(autoincrement())
+  name   CategoryCat @default(NONE)
+  assets Asset[]
+}
