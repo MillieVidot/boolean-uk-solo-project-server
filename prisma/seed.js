@@ -65,6 +65,26 @@ const policiesData = [
     image:
       "https://cdn4.iconfinder.com/data/icons/business-solid-the-capitalism/64/Contract_approved-512.png",
   },
+  {
+    userId: 2,
+    quoteNumber: "quote4d",
+    cost: 1299,
+    startDate: new Date(2010, 06).toISOString(),
+    endDate: new Date(2011, 06).toISOString(),
+    statusId: 4,
+    image:
+      "https://cdn4.iconfinder.com/data/icons/business-solid-the-capitalism/64/Contract_approved-512.png",
+  },
+  {
+    userId: 3,
+    quoteNumber: "quote5c",
+    cost: 1800,
+    startDate: new Date(2012, 12).toISOString(),
+    endDate: new Date(2013, 12).toISOString(),
+    statusId: 5,
+    image:
+      "https://cdn4.iconfinder.com/data/icons/business-solid-the-capitalism/64/Contract_approved-512.png",
+  },
 ]
 
 const assetsData = [
@@ -266,6 +286,14 @@ const assetsOnPoliciesData = [
   { assetId: 5, policyId: 3 },
 ]
 
+const packagesOnPoliciesData = [
+  { packageId: 1, policyId: 1 },
+  { packageId: 2, policyId: 2 },
+  { packageId: 3, policyId: 3 },
+  { packageId: 4, policyId: 4 },
+  { packageId: 5, policyId: 5 },
+]
+
 async function seedDb() {
   console.log("Seeded")
   try {
@@ -285,17 +313,20 @@ async function seedDb() {
       data: policiesData,
     })
 
+    const packages = await db.package.createMany({
+      data: packagesData,
+    })
     const assets = await db.asset.createMany({
       data: assetsData,
     })
 
-    const packages = await db.package.createMany({
-      data: packagesData,
+    const assetsOnPolicies = await db.assetsOnPolicies.createMany({
+      data: assetsOnPoliciesData,
     })
 
-    // const assetsOnPolicies = await db.assetsOnPolicies.createMany({
-    //   data: assetsOnPoliciesData,
-    // })
+    const packagesOnPolicies = await db.packagesOnPolicies.createMany({
+      data: packagesOnPoliciesData,
+    })
   } catch (error) {
     console.log(error)
   }
