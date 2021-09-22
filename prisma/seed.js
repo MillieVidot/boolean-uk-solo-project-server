@@ -1,5 +1,6 @@
 // import { PrismaClient } from "@prisma/client"
 const { PrismaClient } = require("@prisma/client")
+const { policy } = require("../src/utils/database")
 // const prisma = require("./database")
 
 const db = new PrismaClient()
@@ -244,6 +245,25 @@ const categoriesData = [
   { name: "MOBILITY" },
   { name: "VITALS" },
   { name: "NONE" },
+  { name: "SENSES" },
+]
+
+const assetsOnPoliciesData = [
+  { assetId: 1, policyId: 1 },
+  { assetId: 2, policyId: 1 },
+  { assetId: 3, policyId: 1 },
+  { assetId: 4, policyId: 1 },
+  { assetId: 5, policyId: 1 },
+  { assetId: 8, policyId: 2 },
+  { assetId: 2, policyId: 2 },
+  { assetId: 3, policyId: 2 },
+  { assetId: 9, policyId: 2 },
+  { assetId: 5, policyId: 2 },
+  { assetId: 8, policyId: 3 },
+  { assetId: 7, policyId: 3 },
+  { assetId: 3, policyId: 3 },
+  { assetId: 4, policyId: 3 },
+  { assetId: 5, policyId: 3 },
 ]
 
 async function seedDb() {
@@ -272,6 +292,10 @@ async function seedDb() {
     const packages = await db.package.createMany({
       data: packagesData,
     })
+
+    // const assetsOnPolicies = await db.assetsOnPolicies.createMany({
+    //   data: assetsOnPoliciesData,
+    // })
   } catch (error) {
     console.log(error)
   }

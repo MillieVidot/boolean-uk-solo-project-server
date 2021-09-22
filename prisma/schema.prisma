@@ -93,7 +93,7 @@ model Package {
   name       String     @unique // not needed??
   cost       Int
   image      String
-  packageCat PackageCat
+  packageCat PackageCat @default(AREA)
   assets     Asset[]
 }
 

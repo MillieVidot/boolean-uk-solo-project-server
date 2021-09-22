@@ -15,7 +15,7 @@ async function getAllAssets(req, res) {
 
 async function getAssetById(req, res) {
   const { id } = req.params
-  console.log("getAssetById ran")
+  console.log("getAssetById ran", id)
   try {
     const oneAsset = await asset.findUnique({
       where: { id: parseInt(id) },
@@ -26,5 +26,19 @@ async function getAssetById(req, res) {
     res.json(error)
   }
 }
+
+// async function getAssetByCat(req, res) {
+//   const { id } = req.params
+//   console.log("getAssetByCat ran", id)
+//   try {
+//     const foundAssets = await asset.findMany({
+//       where: { categoryId: parseInt(id) },
+//     })
+//     res.json({ foundAssets })
+//   } catch (error) {
+//     console.log(error)
+//     res.json(error)
+//   }
+// }
 
 module.exports = { getAllAssets, getAssetById }
