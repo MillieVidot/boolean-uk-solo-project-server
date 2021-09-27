@@ -1,9 +1,10 @@
 const { Router } = require("express")
-const { getAllUsers, getUserById } = require("./controller")
+const { getAllUsers, getUserById, addOneUser } = require("./controller")
 
 const userRouter = Router() //starts an instance of Router
 
 userRouter.get("/", getAllUsers)
-userRouter.get("/:id", getUserById)
+userRouter.post("/user/login", getUserById)
+userRouter.post("/", addOneUser)
 
 module.exports = userRouter

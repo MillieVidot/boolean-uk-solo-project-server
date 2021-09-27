@@ -27,4 +27,34 @@ async function getPolicyById(req, res) {
   }
 }
 
-module.exports = { getAllPolicies, getPolicyById }
+async function addOnePolicy(req, res) {
+  const { lastName, userId, cost, startDate, endDate } = req.body
+  const randomInt = () => {
+    return Math.floor(Math.random() * 1000)
+  }
+  const quoteId =
+    `MC${lastName}` +
+    new Date().getFullYear() +
+    randomInt() +
+    new Date().getMonth()
+  console.log("addOnePolicy ran", req.body)
+  try {
+    const newPolicy = await policy.create({
+      data: {
+        userId: parseInt(userId),
+        quoteNumber: quoteId,
+        cost: parseInt(cost),
+        startDate: startDate,
+        endDate: endDate,
+        image:
+          "https://cdn4.iconfinder.com/data/icons/business-solid-the-capitalism/64/Contract_approved-512.png",
+      },
+    })
+    res.json(newPolicy)
+  } catch (error) {
+    console.log(error)
+    res.json({ error: error })
+  }
+}
+
+module.exports = { getAllPolicies, getPolicyById, addOnePolicy }

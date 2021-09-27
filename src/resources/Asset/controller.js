@@ -20,11 +20,25 @@ async function getAssetById(req, res) {
     const oneAsset = await asset.findUnique({
       where: { id: parseInt(id) },
     })
-    res.json({ oneAsset })
+    res.json(oneAsset)
   } catch (error) {
     console.log(error)
     res.json(error)
   }
+}
+
+async function getCartAssetsById(req, res) {
+  const { cartAssetIds } = req.body
+  console.log("getCartAssetById ran", cartAssetIds)
+  // try {
+  //   const oneAsset = await asset.findUnique({
+  //     where: { id: parseInt(id) },
+  //   })
+  //   res.json({ oneAsset })
+  // } catch (error) {
+  //   console.log(error)
+  //   res.json(error)
+  // }
 }
 
 // async function getAssetByCat(req, res) {
@@ -41,4 +55,4 @@ async function getAssetById(req, res) {
 //   }
 // }
 
-module.exports = { getAllAssets, getAssetById }
+module.exports = { getAllAssets, getAssetById, getCartAssetsById }

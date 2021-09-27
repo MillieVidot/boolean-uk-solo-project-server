@@ -6,8 +6,8 @@ const morgan = require("morgan")
 
 const userRouter = require("./resources/User/router")
 const policyRouter = require("./resources/Policy/router")
-// const assetRouter = require("./resources/Asset/router")
-// const packageRouter = require("./resources/Package/router")
+const assetRouter = require("./resources/Asset/router")
+const packageRouter = require("./resources/Package/router")
 
 const app = express()
 
@@ -24,8 +24,8 @@ app.use(morgan("dev"))
 
 app.use("/users", userRouter)
 app.use("/policies", policyRouter)
-// app.use("/assets", assetRouter)
-// app.use("/packages", packageRouter)
+app.use("/assets", assetRouter)
+app.use("/packages", packageRouter)
 app.get("*", (req, res) => {
   res.json({ ok: true })
 })
