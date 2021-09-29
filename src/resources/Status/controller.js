@@ -6,7 +6,7 @@ async function addStatus(req, res) {
   console.log("addStatus ran")
   try {
     const Status = await status.create({ data: req.body })
-    res.json({ Status })
+    res.json(Status)
   } catch (error) {
     console.log(error)
     res.json(error)
@@ -17,7 +17,7 @@ async function addStatuses(req, res) {
   console.log("addStatuses ran")
   try {
     const Statuses = await status.createMany({ data: req.body })
-    res.json({ Statuses })
+    res.json(Statuses)
   } catch (error) {
     console.log(error)
     res.json(error)
