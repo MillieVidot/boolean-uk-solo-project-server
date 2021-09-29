@@ -9,6 +9,10 @@ const policyRouter = require("./resources/Policy/router")
 const assetRouter = require("./resources/Asset/router")
 const packageRouter = require("./resources/Package/router")
 
+// prod routers to add to db
+const statusRouter = require("./resources/Status/router")
+const categoryRouter = require("./resources/Category/router")
+
 const app = express()
 
 /* SETUP MIDDLEWARE */
@@ -26,6 +30,11 @@ app.use("/users", userRouter)
 app.use("/policies", policyRouter)
 app.use("/assets", assetRouter)
 app.use("/packages", packageRouter)
+
+// prod routers to add to db
+app.use("/statuses", statusRouter)
+app.use("/categories", categoryRouter)
+
 app.get("*", (req, res) => {
   res.json({ ok: true })
 })

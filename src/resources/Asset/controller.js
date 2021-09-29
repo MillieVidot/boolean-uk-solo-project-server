@@ -2,6 +2,18 @@ const db = require("../../utils/database")
 
 const { asset } = db
 
+async function addAssets(req, res) {
+  const assetsArray = body.req
+  console.log("addAssets ran")
+  try {
+    const Assets = await asset.createMany({ data: assetsArray })
+    res.json(Assets)
+  } catch (error) {
+    console.log(error)
+    res.json(error)
+  }
+}
+
 async function getAllAssets(req, res) {
   console.log("getAllAssets ran")
   try {
@@ -55,4 +67,4 @@ async function getCartAssetsById(req, res) {
 //   }
 // }
 
-module.exports = { getAllAssets, getAssetById, getCartAssetsById }
+module.exports = { getAllAssets, getAssetById, getCartAssetsById, addAssets }
