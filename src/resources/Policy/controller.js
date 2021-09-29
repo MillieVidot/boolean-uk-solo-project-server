@@ -1,3 +1,4 @@
+const { parse } = require("dotenv")
 const db = require("../../utils/database")
 
 const { policy } = db
@@ -5,7 +6,16 @@ const { policy } = db
 async function getAllPolicies(req, res) {
   console.log("getAllPolicies ran")
   try {
-    const policies = await policy.findMany()
+    const policies = await policy.findMany({
+      where: {
+        userId: parseInt(id),
+      },
+      include: {
+        status: {
+          select: { stage: true },
+        },
+      },
+    })
     res.json(policies)
   } catch (error) {
     console.log(error)
@@ -28,7 +38,13 @@ async function getPolicyById(req, res) {
 }
 
 async function addOnePolicy(req, res) {
-  const { lastName, userId, cost, startDate, endDate } = req.body
+  const { currentUserId, lastName, assetsIds, packagesIds, cost } = req.body
+  console.log("addOnePolicy ran with:", req.body)
+
+  const startDate = new Date()
+  const endDate = (d =>
+    new Date(d.getFullYear() + 1, d.getMonth(), d.getDate()))(new Date())
+
   const randomInt = () => {
     return Math.floor(Math.random() * 1000)
   }
@@ -37,20 +53,29 @@ async function addOnePolicy(req, res) {
     new Date().getFullYear() +
     randomInt() +
     new Date().getMonth()
-  console.log("addOnePolicy ran", req.body)
+
   try {
-    const newPolicy = await policy.create({
+    const newPolicyTest = await policy.create({
       data: {
-        userId: parseInt(userId),
+        userId: parseInt(currentUserId),
         quoteNumber: quoteId,
         cost: parseInt(cost),
-        startDate: startDate,
-        endDate: endDate,
+        startDate: startDate.toISOString(),
+        endDate: endDate.toISOString(),
+        statusId: 2,
         image:
           "https://cdn4.iconfinder.com/data/icons/business-solid-the-capitalism/64/Contract_approved-512.png",
+        AssetsOnPolicies: { createMany: { data: assetsIds } },
+        PackagesOnPolicies: { createMany: { data: packagesIds } },
+      },
+      include: {
+        status: {
+          select: { stage: true },
+        },
       },
     })
-    res.json(newPolicy)
+
+    res.json(newPolicyTest)
   } catch (error) {
     console.log(error)
     res.json({ error: error })

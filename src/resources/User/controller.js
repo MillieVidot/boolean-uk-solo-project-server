@@ -27,6 +27,29 @@ async function getUserById(req, res) {
   }
 }
 
+async function getPoliciesByCitizenId(req, res) {
+  const { citizenId } = req.body
+  console.log("getPoliciesByCitizenId ran", req.body)
+  try {
+    const userPolices = await user.findMany({
+      where: { citizenId: parseInt(citizenId) },
+      include: {
+        policies: {
+          select: {
+            status: {
+              select: { stage: true },
+            },
+          },
+        },
+      },
+    })
+    res.json(userPolices)
+  } catch (error) {
+    console.log(error)
+    res.json(error)
+  }
+}
+
 async function addOneUser(req, res) {
   // const { citizenId, firstName, lastName, password } = req.body
   console.log("addOneUser ran", req.body)
@@ -41,4 +64,9 @@ async function addOneUser(req, res) {
   }
 }
 
-module.exports = { getAllUsers, getUserById, addOneUser }
+module.exports = {
+  getAllUsers,
+  getUserById,
+  addOneUser,
+  getPoliciesByCitizenId,
+}
