@@ -3,10 +3,9 @@ const db = require("../../utils/database")
 const { status } = db
 
 async function addStatus(req, res) {
-  const status = body.req
   console.log("addStatus ran")
   try {
-    const Status = await asset.create(status)
+    const Status = await asset.create({ data: body.req })
     res.json({ Status })
   } catch (error) {
     console.log(error)
