@@ -6,7 +6,7 @@ async function addStatuses(req, res) {
   const statusesArray = body.req
   console.log("addStatuses ran")
   try {
-    const Statuses = await asset.createMany({ data: statusesArray })
+    const Statuses = await asset.createMany(statusesArray)
     res.json(Statuses)
   } catch (error) {
     console.log(error)

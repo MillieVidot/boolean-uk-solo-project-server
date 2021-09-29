@@ -36,7 +36,7 @@ app.use("/statuses", statusRouter)
 app.use("/categories", categoryRouter)
 
 app.get("*", (req, res) => {
-  res.json({ ok: true })
+  res.json({ ok: "Server working but route not found" })
 })
 
 /* START SERVER */
