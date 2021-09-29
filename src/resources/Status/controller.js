@@ -2,6 +2,18 @@ const db = require("../../utils/database")
 
 const { status } = db
 
+async function addStatus(req, res) {
+  const status = body.req
+  console.log("addStatus ran")
+  try {
+    const Status = await asset.create(status)
+    res.json({ Status })
+  } catch (error) {
+    console.log(error)
+    res.json(error)
+  }
+}
+
 async function addStatuses(req, res) {
   const statusesArray = body.req
   console.log("addStatuses ran")
@@ -25,4 +37,4 @@ async function getAllStatuses(req, res) {
   }
 }
 
-module.exports = { addStatuses, getAllStatuses }
+module.exports = { addStatus, addStatuses, getAllStatuses }
