@@ -3,10 +3,9 @@ const db = require("../../utils/database")
 const { asset } = db
 
 async function addAssets(req, res) {
-  const assetsArray = body.req
   console.log("addAssets ran")
   try {
-    const Assets = await asset.createMany({ data: assetsArray })
+    const Assets = await asset.createMany({ data: req.body })
     res.json(Assets)
   } catch (error) {
     console.log(error)
