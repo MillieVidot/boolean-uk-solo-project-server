@@ -3,10 +3,9 @@ const db = require("../../utils/database")
 const { category } = db
 
 async function addCategories(req, res) {
-  const categoriesArray = body.req
   console.log("addCategories ran")
   try {
-    const Categories = await category.createMany({ data: categoriesArray })
+    const Categories = await category.createMany({ data: req.body })
     res.json(Categories)
   } catch (error) {
     console.log(error)
