@@ -5,7 +5,7 @@ const { status } = db
 async function addStatus(req, res) {
   console.log("addStatus ran")
   try {
-    const Status = await status.create({ data: body.req })
+    const Status = await status.create({ data: req.body })
     res.json({ Status })
   } catch (error) {
     console.log(error)
@@ -14,10 +14,9 @@ async function addStatus(req, res) {
 }
 
 async function addStatuses(req, res) {
-  const statusesArray = body.req
   console.log("addStatuses ran")
   try {
-    const Statuses = await status.createMany({ data: statusesArray })
+    const Statuses = await status.createMany({ data: req.body })
     res.json({ Statuses })
   } catch (error) {
     console.log(error)
