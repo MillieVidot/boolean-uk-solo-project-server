@@ -2,6 +2,17 @@ const db = require("../../utils/database")
 
 const { package } = db
 
+async function addPackages(req, res) {
+  console.log("addPackages ran")
+  try {
+    const Packages = await package.createMany({ data: req.body })
+    res.json(Packages)
+  } catch (error) {
+    console.log(error)
+    res.json(error)
+  }
+}
+
 async function getAllPackages(req, res) {
   console.log("getAllPackages ran")
   try {
@@ -27,4 +38,4 @@ async function getPackageById(req, res) {
   }
 }
 
-module.exports = { getAllPackages, getPackageById }
+module.exports = { getAllPackages, getPackageById, addPackages }
