@@ -82,4 +82,26 @@ async function addOnePolicy(req, res) {
   }
 }
 
-module.exports = { getAllPolicies, getPolicyById, addOnePolicy }
+async function patchOnePolicy(req, res) {
+  const { quoteNumber } = req.body
+  console.log("patchOnePolicy ran", req.body)
+  try {
+    const onePolicy = await policy.update({
+      where: { quoteNumber: quoteNumber },
+      data: {
+        statusId: 4,
+      },
+      // include: {
+      //   status: {
+      //     select: { stage: true },
+      //   },
+      // },
+    })
+    res.json(onePolicy)
+  } catch (error) {
+    console.log(error)
+    res.json(error)
+  }
+}
+
+module.exports = { getAllPolicies, getPolicyById, addOnePolicy, patchOnePolicy }

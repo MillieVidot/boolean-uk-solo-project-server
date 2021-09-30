@@ -19,6 +19,12 @@ async function getUserById(req, res) {
   try {
     const oneUser = await user.findFirst({
       where: { AND: [{ citizenId: citizenId }, { password: password }] },
+      select: {
+        id: true,
+        citizenId: true,
+        firstName: true,
+        lastName: true,
+      },
     })
     res.json(oneUser)
   } catch (error) {
@@ -28,17 +34,24 @@ async function getUserById(req, res) {
 }
 
 async function getPoliciesByCitizenId(req, res) {
-  const { citizenId } = req.body
   console.log("getPoliciesByCitizenId ran", req.body)
+  const { citizenId } = req.body
   try {
     const userPolices = await user.findMany({
-      where: { citizenId: parseInt(citizenId) },
-      include: {
+      where: { citizenId: citizenId },
+      select: {
         policies: {
           select: {
+            id: true,
+            quoteNumber: true,
+            userId: true,
+            cost: true,
+            startDate: true,
+            endDate: true,
             status: {
               select: { stage: true },
             },
+            image: true,
           },
         },
       },
